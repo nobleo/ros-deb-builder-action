@@ -36,7 +36,7 @@ test "$VERSION_CODENAME" = "jammy" && sudo cp "$(dirname "$0")/jammy-sbuild.sour
 test "$VERSION_CODENAME" = "noble" && sudo cp "$(dirname "$0")/noble-ros.sources" /etc/apt/sources.list.d/
 sudo apt update
 
-sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends sbuild mmdebstrap distro-info debian-archive-keyring ccache uidmap curl git-lfs debootstrap
+sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends sbuild mmdebstrap distro-info debian-archive-keyring ccache uidmap curl git-lfs debootstrap schroot
 
 if [ "$DEB_ARCH" != "$(dpkg --print-architecture)" ]; then
   # use qemu to translate architecture
