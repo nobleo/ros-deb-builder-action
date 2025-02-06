@@ -123,7 +123,7 @@ for PKG_PATH in $(colcon list --topological-order --paths-only || catkin_topolog
   echo 11 > debian/compat
 
   # dpkg-source-opts: no need for upstream.tar.gz
-  sbuild --chroot-mode=unshare --no-clean-source --no-run-lintian \
+  sbuild --chroot-mode=schroot --no-clean-source --no-run-lintian \
     --no-source --dpkg-source-opts="-Zgzip -z1 --format=1.0 -sn" --build-dir="$APT_REPO" \
     --extra-package="$APT_REPO" "$@"
 

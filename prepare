@@ -36,7 +36,7 @@ test "$VERSION_CODENAME" = "jammy" && sudo cp "$(dirname "$0")/jammy-sbuild.sour
 test "$VERSION_CODENAME" = "noble" && sudo cp "$(dirname "$0")/noble-ros.sources" /etc/apt/sources.list.d/
 sudo apt update
 
-sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends sbuild mmdebstrap distro-info debian-archive-keyring ccache uidmap curl git-lfs
+sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends sbuild mmdebstrap distro-info debian-archive-keyring ccache uidmap curl git-lfs debootstrap
 
 if [ "$DEB_ARCH" != "$(dpkg --print-architecture)" ]; then
   # use qemu to translate architecture
@@ -60,6 +60,20 @@ sudo DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends pytho
 echo "Setup build environment"
 
 mkdir -p "$HOME/.cache/sbuild"
+
+# Create the schroot environment
+mkdir -p /srv/chroot/"$DEB_DISTRO"-"$DEB_ARCH"
+mkdir -p /etc/schroot/chroot.d
+debootstrap --variant=buildd --arch="$DEB_ARCH" "$DEB_DISTRO" /srv/chroot/"$DEB_DISTRO"-"$DEB_ARCH" http://archive.ubuntu.com/ubuntu/
+echo "
+[$DEB_DISTRO-$DEB_ARCH]
+description=$DEB_DISTRO ($DEB_ARCH)
+directory=/srv/chroot/$DEB_DISTRO-$DEB_ARCH
+users=root
+groups=root
+root-groups=root
+" > /etc/schroot/chroot.d/"$DEB_DISTRO"-"$DEB_ARCH".conf
+
 mmdebstrap --variant=buildd --include=apt,ccache,ca-certificates --arch="$DEB_ARCH" \
   --customize-hook='chroot "$1" update-ccache-symlinks' \
   --components=main,universe "$DEB_DISTRO" "$HOME/.cache/sbuild/$DEB_DISTRO-$DEB_ARCH.tar"
