@@ -32,6 +32,8 @@ echo "Install dependencies"
 
 set -ex
 
+echo 'Acquire::AllowInsecureRepositories "true";' | sudo tee /etc/apt/apt.conf.d/99allow-insecure-repositories
+echo 'Acquire::AllowDowngradeToInsecureRepositories "true";' | sudo tee -a /etc/apt/apt.conf.d/99allow-insecure-repositories
 test "$VERSION_CODENAME" = "jammy" && sudo cp "$(dirname "$0")/jammy-sbuild.sources" /etc/apt/sources.list.d/
 test "$VERSION_CODENAME" = "noble" && sudo cp "$(dirname "$0")/noble-ros.sources" /etc/apt/sources.list.d/
 sudo apt update
