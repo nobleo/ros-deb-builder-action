@@ -84,6 +84,7 @@ set -ex
 cat /home/runner/work/ros_debian_packages/ros_debian_packages/colcon_jazzy.yaml
 cat $COLCON_DEFAULTS_FILE
 colcon list
+mkdir -p ~/.colcon
 cp $COLCON_DEFAULTS_FILE ~/.colcon/defaults.yaml
 colcon list
 rm ~/.colcon/defaults.yaml
