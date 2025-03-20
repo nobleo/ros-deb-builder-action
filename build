@@ -84,6 +84,14 @@ set -ex
 cat /home/runner/work/ros_debian_packages/ros_debian_packages/colcon_jazzy.yaml
 cat $COLCON_DEFAULTS_FILE
 colcon list
+cp $COLCON_DEFAULTS_FILE ~/.colcon/defaults.yaml
+colcon list
+rm ~/.colcon/defaults.yaml
+colcon list
+cp $COLCON_DEFAULTS_FILE colcon_defaults.yaml
+colcon list
+
+
 
 for PKG in $(colcon list --topological-order --names-only || catkin_topological_order --only-names); do
   printf "%s:\n  %s:\n  - %s\n" "$PKG" "$DISTRIBUTION" "ros-$ROS_DEB$(printf '%s' "$PKG" | tr '_' '-')" >> "$APT_REPO/local.yaml"
