@@ -90,4 +90,4 @@ REPOS_FILE="${REPOS_FILE:-sources.repos}"
 echo "Checkout workspace"
 
 mkdir src
-vcs import --recursive --shallow --input  "$REPOS_FILE" src
+vcs import --recursive --input  "$REPOS_FILE" src
